@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        // {
+        //     "name": "Dart & Flutter",
+        //     "request": "launch",
+        //     "type": "dart",
+        //     "args": [
+        //         "--web-port",
+        //         "$FLUTTER_WEB_PORT",
+        //         "--web-hostname",
+        //         "0.0.0.0",
+        //         "--observatory-port",
+        //         "$FLUTTER_OBSERVATORY_PORT"
+        //     ]
+        // },
+        {
+            "name": "new_sample_flutter_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "new_sample_flutter_app (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "new_sample_flutter_app (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
