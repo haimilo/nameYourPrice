@@ -24,8 +24,8 @@ final List<ProductInfo> products = [
   ProductInfo('Mac Studio', 10000000),
 ];
 
-const String InCorrectPriceSVG = 'assets/icons/Incorrect.svg';
-const String CorrectPriceSVG = 'assets/icons/Correct.svg';
+const String inCorrectPriceSVG = 'assets/icons/Incorrect.svg';
+const String correctPriceSVG = 'assets/icons/Correct.svg';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                               child: SvgPicture.asset(
                                 width: 40,
                                 height: 40,
-                                isChecked ? CorrectPriceSVG : InCorrectPriceSVG,
+                                isChecked ? correctPriceSVG : inCorrectPriceSVG,
                                 fit: BoxFit.cover,
                               ),
                             ),
