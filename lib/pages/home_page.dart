@@ -1,8 +1,31 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+// Fix a list of products
+class ProductInfo {
+  final String name;
+  final int price;
+
+  ProductInfo(this.name, this.price);
+}
+
+final List<ProductInfo> products = [
+  ProductInfo('Wireless Mouse', 1000000),
+  ProductInfo('Keyboard', 2000000),
+  ProductInfo('Camera', 3000000),
+  ProductInfo('Speaker', 4000000),
+  ProductInfo('Case PC', 5000000),
+  ProductInfo('Iphone', 6000000),
+  ProductInfo('Ipad', 7000000),
+  ProductInfo('Mac mini', 8000000),
+  ProductInfo('Mac Pro', 9000000),
+  ProductInfo('Mac Studio', 10000000),
+];
+
+final String InCorrectPriceSVG = 'assets/icons/Incorrect.svg';
+final String CorrectPriceSVG = 'assets/icons/Correct.svg';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,7 +36,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isChecked = false;
+  bool showResult = false;
   final myController = TextEditingController();
+  int _currentProductIndex = 0;
+  int _currentProductPrice = products[0].price;
+  int _currentProductPriceInput = 0;
 
   @override
   void dispose() {
@@ -25,7 +52,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Name Your Price'),
+        title: Text(products[_currentProductIndex].name),
       ),
       body: Container(
         height: double.infinity,
@@ -50,6 +77,19 @@ class _HomePageState extends State<HomePage> {
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: TextField(
                           controller: myController,
+                          onChanged: (text) {
+                            setState(() {
+                              _currentProductPriceInput = text
+                                      .replaceAll('.', '')
+                                      .replaceAll('đ', '')
+                                      .isEmpty
+                                  ? 0
+                                  : int.parse(text
+                                      .replaceAll('.', '')
+                                      .replaceAll('đ', ''));
+                            });
+                            print('price input $_currentProductPriceInput');
+                          },
                           style: const TextStyle(
                             color: Colors.white,
                           ),
@@ -95,9 +135,35 @@ class _HomePageState extends State<HomePage> {
                             ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  isChecked = !isChecked;
-                                  myController.text =
-                                      isChecked ? '1,000,000 đ' : '500,000 đ';
+                                  if (_currentProductIndex <
+                                      products.length - 1) {
+                                    _currentProductIndex++;
+                                    myController.clear();
+                                    setState(() {
+                                      _currentProductPrice =
+                                          products[_currentProductIndex - 1]
+                                              .price;
+                                    });
+                                  } else {
+                                    _currentProductIndex = 0;
+                                    myController.clear();
+                                    setState(() {
+                                      _currentProductPrice =
+                                          products[_currentProductIndex].price;
+                                    });
+                                    showResult = true;
+                                  }
+                                  print('price $_currentProductPrice');
+                                  print(_currentProductPrice.runtimeType);
+                                  print(
+                                      'priceInput $_currentProductPriceInput');
+                                  print(_currentProductPriceInput.runtimeType);
+                                  _currentProductPrice.compareTo(
+                                              _currentProductPriceInput) ==
+                                          0
+                                      ? isChecked = true
+                                      : isChecked = false;
+                                  print(isChecked);
                                 });
                               },
                               style: (ElevatedButton.styleFrom(
@@ -112,6 +178,14 @@ class _HomePageState extends State<HomePage> {
                             ElevatedButton(
                               onPressed: () {
                                 myController.clear();
+                                setState(() {
+                                  if (_currentProductIndex == 0) {
+                                    _currentProductIndex = 0;
+                                  } else {
+                                    _currentProductIndex--;
+                                  }
+                                  isChecked = false;
+                                });
                               },
                               style: (ElevatedButton.styleFrom(
                                 foregroundColor: Colors.white,
@@ -126,6 +200,31 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: Card(
+                color: Colors.transparent,
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          child: Align(
+                            child: SvgPicture.asset(
+                              width: 40,
+                              height: 40,
+                              isChecked ? CorrectPriceSVG : InCorrectPriceSVG,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
