@@ -24,8 +24,8 @@ final List<ProductInfo> products = [
   ProductInfo('Mac Studio', 10000000),
 ];
 
-final String InCorrectPriceSVG = 'assets/icons/Incorrect.svg';
-final String CorrectPriceSVG = 'assets/icons/Correct.svg';
+const String InCorrectPriceSVG = 'assets/icons/Incorrect.svg';
+const String CorrectPriceSVG = 'assets/icons/Correct.svg';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -88,7 +88,6 @@ class _HomePageState extends State<HomePage> {
                                       .replaceAll('.', '')
                                       .replaceAll('đ', ''));
                             });
-                            print('price input $_currentProductPriceInput');
                           },
                           style: const TextStyle(
                             color: Colors.white,
@@ -151,19 +150,13 @@ class _HomePageState extends State<HomePage> {
                                       _currentProductPrice =
                                           products[_currentProductIndex].price;
                                     });
-                                    showResult = true;
                                   }
-                                  print('price $_currentProductPrice');
-                                  print(_currentProductPrice.runtimeType);
-                                  print(
-                                      'priceInput $_currentProductPriceInput');
-                                  print(_currentProductPriceInput.runtimeType);
+                                  showResult = true;
                                   _currentProductPrice.compareTo(
                                               _currentProductPriceInput) ==
                                           0
                                       ? isChecked = true
                                       : isChecked = false;
-                                  print(isChecked);
                                 });
                               },
                               style: (ElevatedButton.styleFrom(
@@ -185,6 +178,7 @@ class _HomePageState extends State<HomePage> {
                                     _currentProductIndex--;
                                   }
                                   isChecked = false;
+                                  showResult = false;
                                 });
                               },
                               style: (ElevatedButton.styleFrom(
@@ -204,26 +198,29 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Center(
-              child: Card(
-                color: Colors.transparent,
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          child: Align(
-                            child: SvgPicture.asset(
-                              width: 40,
-                              height: 40,
-                              isChecked ? CorrectPriceSVG : InCorrectPriceSVG,
-                              fit: BoxFit.cover,
+            Visibility(
+              visible: showResult,
+              child: Center(
+                child: Card(
+                  color: Colors.transparent,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            child: Align(
+                              child: SvgPicture.asset(
+                                width: 40,
+                                height: 40,
+                                isChecked ? CorrectPriceSVG : InCorrectPriceSVG,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
